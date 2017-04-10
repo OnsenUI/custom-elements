@@ -282,16 +282,24 @@ export default class CustomElementInternals {
     if (definition.connectedCallback) {
       definition.connectedCallback.call(element);
     }
+
+    element.__CE_isConnectedCallbackCalled = true;
   }
 
   /**
    * @param {!Element} element
    */
   disconnectedCallback(element) {
+    if (!element.__CE_isConnectedCallbackCalled) {
+      this.connectedCallback(element);
+    }
+
     const definition = element.__CE_definition;
     if (definition.disconnectedCallback) {
       definition.disconnectedCallback.call(element);
     }
+
+    element.__CE_isConnectedCallbackCalled = undefined;
   }
 
   /**
