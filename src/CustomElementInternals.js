@@ -83,7 +83,9 @@ export default class CustomElementInternals {
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
       if (element.__CE_state === CEState.custom) {
-        this.connectedCallback(element);
+        if (Utilities.isConnected(element)) {
+          this.connectedCallback(element);
+        }
       } else {
         this.upgradeElement(element);
       }
